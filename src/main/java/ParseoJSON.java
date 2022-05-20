@@ -65,15 +65,27 @@ public class ParseoJSON {
             //System.out.println(comments);
         }
 
+        // Código de respuesta que nos ofrecerá el estatus  ante una petición de conexión
         switch(response.statusCode()){
+
+            // La solicitud ha tenido éxito. El significado de un éxito varía dependiendo del método HTTP.
             case 200:
                 procesaRespuesta(response.body());
                 break;
+
+            // El servidor no pudo encontrar el contenido solicitado.
             case 404:
                 System.out.println("No lo encuentro");
                 break;
+
+            /* El cliente no posee los permisos necesarios para cierto contenido, por lo que el
+                 servidor está rechazando otorgar una respuesta apropiada. */
             case 403:
                 System.out.println("La cosa esta chunga");
+                break;
+
+            default:
+                System.out.println("Hay problema en la conexión");
                 break;
         }
     }
@@ -81,5 +93,9 @@ public class ParseoJSON {
     private static void procesaRespuesta(String body) {
         String cadenaJSON = body;
         System.out.println(cadenaJSON);
+
+        JSONObject obj = new JSONObject(cadenaJSON);
+        String titulo = obj.getString("title");
+        System.out.println(titulo);
     }
 }
